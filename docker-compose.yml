@@ -28,16 +28,13 @@ services:
     privileged: true
     user: root
     ports:
-      - "8080:8080"      # Jenkins UI
+      - "8081:8080"      # Jenkins UI
       - "50000:50000"    # Jenkins agent communication
     volumes:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock  # Docker-in-Docker
       - ./jenkins/shared-libraries:/var/jenkins_home/shared-libraries
       - ./jenkins/pipelines:/var/jenkins_home/pipelines
-    environment:
-      - JENKINS_OPTS=--prefix=/jenkins
-      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
     networks:
       - cicd-network
     restart: unless-stopped
@@ -67,8 +64,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./monitoring/prometheus/alerts.yml:/etc/prometheus/alerts.yml
+      - ./monitoring/prometheus:/etc/prometheus
       - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -127,7 +123,7 @@ services:
     ports:
       - "9093:9093"
     volumes:
-      - ./monitoring/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - ./monitoring/alertmanager:/etc/alertmanager
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
     networks:
@@ -215,7 +211,7 @@ services:
       - "9600:9600"
     volumes:
       - ./logging/logstash/pipeline:/usr/share/logstash/pipeline
-      - ./logging/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./logging/logstash/config:/usr/share/logstash/config
     environment:
       - "LS_JAVA_OPTS=-Xms256m -Xmx256m"
     networks:
