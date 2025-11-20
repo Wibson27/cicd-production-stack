@@ -23,7 +23,7 @@ services:
   # JENKINS - THE ORCHESTRATOR
   #############################
   jenkins:
-    image: jenkins/jenkins:lts-jdk17
+    build: ./infrastructure/jenkins
     container_name: production-jenkins
     privileged: true
     user: root
@@ -152,7 +152,7 @@ services:
     image: sonarqube:community
     container_name: production-sonarqube
     ports:
-      - "9000:9000"
+      - "9001:9000"
     environment:
       - SONAR_JDBC_URL=jdbc:postgresql://sonarqube-db:5432/sonarqube
       - SONAR_JDBC_USERNAME=sonar
