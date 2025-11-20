@@ -49,6 +49,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - JENKINS_URL=http://jenkins:8080
+      - JENKINS_SECRET=${JENKINS_SECRET_AGENT1}  
+      - JENKINS_AGENT_NAME=docker-agent
+      - JENKINS_AGENT_WORKDIR=/home/jenkins/agent
     networks:
       - cicd-network
     depends_on:

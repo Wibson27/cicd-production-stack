@@ -32,3 +32,6 @@ desktop.ini
 tmp/
 temp/
 *.tmp
+# Environment variables
+.env
+*.env.local
